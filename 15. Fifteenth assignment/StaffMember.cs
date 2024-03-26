@@ -18,13 +18,8 @@ public class StaffMember : IOrderObserver
 {
     public string Name { get; }
 
-    public StaffMember(string name)
-    {
-        Name = name;
-    }
+    public StaffMember(string name) => Name = name;
 
     public void HandleOrderChange(Order order)
-    {
-        Console.WriteLine($"Notification for staff member {Name}: Order {order.OrderId} status changed to {order.Status}");
-    }
+        => Console.WriteLine($"Notification for staff member {Name}: Order {order.OrderId} status changed to {order.Status}");
 }
