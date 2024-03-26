@@ -1,0 +1,24 @@
+1. Remove all the summaries.
+2. Remove the unneeded using statements.
+3. Convert the namespaces to file-scoped.
+4. Create all the dependencies of the Speaker class.
+5. Remove the unneeded comments.
+6. Remove the #region and #endregion, no need for them
+7. Extract the custom exceptions into a separate files, and put them in the folder Exceptions
+8. Remove an unneeded and unused constructor from SpeakerDoesntMeetRequirementsException 
+9. Use static arrays or IEnumerable<T> instead of List<T>.
+10. Remove unnecessary parenthesis from expressions
+11. Move the property validation for guarding against null in the constructor, ensuring that the properties are not null and make all the required properties required.
+12. Start using var everywhere instead of mixing concrete types and var in random places.
+13. Rename variables
+   - "Exp" to "YearsOfExperience"
+   - "emps" to "prestigiousEmployers"
+   - "good" to "isProfessional"
+   - "ot" to "outdatedTechnologies"
+   - "domains" to "badEmailDomains"
+
+14. Extract the registration calculation in a separate method
+15. Stop using int? instead of int on random places.
+16. Refactor the if statements, and improve the control flow logic.
+17. Extract the approving and dissaproving of the session in a separate method, and start do it in the constructor
+18. Extract the saving to database login into separate method.
