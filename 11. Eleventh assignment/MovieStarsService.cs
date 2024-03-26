@@ -4,9 +4,9 @@ using Serilog;
 
 public class MovieStarsService()
 {
-    public IEnumerable<MovieStar>? GetMovieStarsList(string inputFilePath)
+    public IEnumerable<MovieStar> GetMovieStarsList(string inputFilePath)
     {
-        string? json = null;
+        string json = null;
         var successfullyReadTheJson = false;
         var successfullyDeserializeTheJson = false;
 
