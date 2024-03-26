@@ -13,11 +13,7 @@ Log.Logger = new LoggerConfiguration()
     .File(logFilesPath, rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-//When an error that needs to be logged happens,
-//a folder named Logs will appear in the root of the project
-//the easiest way to force some error is to rename the input.txt file
-//or delete it, or move it somewhere else.
-
+//the easiest way to force some error is to rename, delete or move the input.txt file
 var movieStarsService = new MovieStarsService();
 var movieStars = movieStarsService.GetMovieStarsList(inputFilePath);
 
