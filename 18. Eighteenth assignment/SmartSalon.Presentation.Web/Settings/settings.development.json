@@ -1,0 +1,26 @@
+{
+    "ConnectionStrings": {
+        "Sql": "Server=.,1433;Database=SmartSalon;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rd123",
+        "Redis": "localhost:6379"
+    },
+    "SecretKeys": {
+        "Jwt": "Some magic horses from tu sofia generated this string"
+    },
+    "Serilog": {
+        "Using": ["Serilog.Sinks.Seq", "Serilog.Sinks.Console"],
+        "MinimumLevel": {
+            "Default": "Information",
+            "Override": {
+                "Microsoft": "Information"
+            }
+        },
+        "WriteTo": [
+            {
+                "Name": "Console",
+                "Args": { "restrictedToMinimumLevel": "Error" }
+            },
+            { "Name": "Seq", "Args": { "serverUrl": "http://localhost:5341" } }
+        ],
+        "Enrich": ["FromLogContext", "WithMachineName", "WithTreadId"]
+    }
+}
