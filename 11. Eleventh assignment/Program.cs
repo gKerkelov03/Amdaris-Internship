@@ -28,3 +28,4 @@ if (movieStars is not null)
         Console.WriteLine();
     }
 }
+//TODO: Use async operations for writing and reading information from your log file
