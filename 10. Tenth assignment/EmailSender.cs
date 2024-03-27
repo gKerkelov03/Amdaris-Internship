@@ -7,7 +7,7 @@ using FluentEmail.Smtp;
 public class EmailSender
 {
     const string senderEmail = "barbers.baybg@gmail.com";
-    const string senderPassword = "dngd roit xigx pmmk ";
+    const string senderPassword = "dngd roit xigx pmmk";
 
     static EmailSender()
     {
