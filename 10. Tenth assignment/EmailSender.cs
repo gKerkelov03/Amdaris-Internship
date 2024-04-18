@@ -1,39 +1,30 @@
 using System.Net;
 using System.Net.Mail;
-using FluentEmail.Core;
-using FluentEmail.Razor;
-using FluentEmail.Smtp;
 
-public class EmailSender
+public class EmailSender : IDisposable
 {
-    const string senderEmail = "barbers.baybg@gmail.com";
-    const string senderPassword = "dngd roit xigx pmmk";
+    private const string _senderEmail = "barbers.baybg@gmail.com";
+    private const string _senderEmailPassword = "dngd roit xigx pmmk";
 
-    static EmailSender()
+    private readonly SmtpClient _smtpClient = new()
     {
-        var sender = new SmtpSender(() => new()
-        {
-            Host = "smtp.gmail.com",
-            Port = 587,
-            UseDefaultCredentials = false,
-            Credentials = new NetworkCredential(senderEmail, senderPassword),
-            EnableSsl = true,
-            DeliveryMethod = SmtpDeliveryMethod.Network,
-        });
+        Host = "smtp.gmail.com",
+        Port = 587,
+        UseDefaultCredentials = false,
+        Credentials = new NetworkCredential(_senderEmail, _senderEmailPassword),
+        EnableSsl = true,
+        DeliveryMethod = SmtpDeliveryMethod.Network,
+    };
 
-        Email.DefaultSender = sender;
-        Email.DefaultRenderer = new RazorRenderer();
+    public void SendThankYouEmail(string recipientEmail, string name)
+    {
+        var content = $"Hello {name}, thank you very much for subscribing to our email campaign.";
+        var subject = "Thank you";
+
+        var emailToSend = new MailMessage(_senderEmail, recipientEmail, subject, content);
+
+        _smtpClient.Send(emailToSend);
     }
 
-    public async Task SendConfirmationEmailAsync(string recipientEmail, object model)
-    {
-        var emailTemplate = File.ReadAllText("template.html");
-
-        await Email
-            .From(senderEmail)
-            .To(recipientEmail)
-            .Subject("Confirm email")
-            .UsingTemplate(emailTemplate, model)
-            .SendAsync();
-    }
+    public void Dispose() => _smtpClient.Dispose();
 }
