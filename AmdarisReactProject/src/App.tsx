@@ -1,3 +1,4 @@
+import React from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
 import ProtectedRoute from './ProtectedRoute';
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     },
     {
         path: 'landing',
+        element: <LandingPage />
+    },
+    {
+        path: '/',
         element: <LandingPage />
     },
     {
