@@ -7,50 +7,65 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import React, { FormEvent, useState } from 'react';
+import { useFormik } from 'formik';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 import useToggle from '../hooks/useToggle';
 import httpClient from '../http-client';
 
+const validationSchema = Yup.object({
+    email: Yup.string().email('Invalid email format').required('Required'),
+    password: Yup.string()
+        .min(6, 'Password should be at least 6 characters long')
+        .required('Required')
+});
+
 const LoginForm: React.FC = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [showPassword, toggleShowPassword] = useToggle();
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: ''
+        },
+        validationSchema,
+        onSubmit: async (values) => {
+            try {
+                const response = await httpClient.post('/Auth/Login', {
+                    email: values.email,
+                    password: values.password
+                });
 
-        try {
-            const response = await httpClient.post('/Auth/Login', {
-                email,
-                password
-            });
+                localStorage.setItem('token', response.data.jwtToken);
 
-            localStorage.setItem('token', response.data.token);
-            navigate('/landing');
-
-            setTimeout(() => {
                 navigate('/main');
-            }, 0);
-        } catch (error) {
-            alert(error);
+                window.location.reload();
+            } catch (error) {
+                alert(error);
+            }
         }
-    };
+    });
 
     return (
         <Container>
             <Typography variant="h4" component="h1" gutterBottom>
                 Login
             </Typography>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
                 <TextField
                     label="Email"
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="email"
+                    name="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
                 />
                 <TextField
                     label="Password"
@@ -58,8 +73,18 @@ const LoginForm: React.FC = () => {
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    id="password"
+                    name="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                        formik.touched.password &&
+                        Boolean(formik.errors.password)
+                    }
+                    helperText={
+                        formik.touched.password && formik.errors.password
+                    }
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
